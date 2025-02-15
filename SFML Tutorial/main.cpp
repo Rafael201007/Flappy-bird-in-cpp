@@ -77,8 +77,10 @@ public:
 class Button {
 public:
 	std::unique_ptr<Object> buttonSprite;
-	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress) {
+	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress, int originX, int originY) {
 		buttonSprite = std::make_unique<Object>(buttonSpriteAdress, ButtonXpos, ButtonYpos);
+		buttonSprite->sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
+
 	}
 
 	bool DetectButtonClick(sf::RenderWindow& window) {
@@ -141,16 +143,12 @@ int main() {
 	int points = 0;
 
 	Object chooseSign("Sprites/Modes/choosemode.png", 0, 0);
-	Button doubleTimeButton(0, 0, "Sprites/Modes/doubletime.png");
-	Button hardRockButton(0, 0, "Sprites/Modes/hardrock.png");
-	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png");
-	Button defaultDiff(0, 0, "Sprites/Modes/default.png");
+	Button doubleTimeButton(0, 0, "Sprites/Modes/doubletime.png", 71, 112);
+	Button hardRockButton(0, 0, "Sprites/Modes/hardrock.png", 115, 122);
+	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png", 51, 115);
+	Button defaultDiff(0, 0, "Sprites/Modes/default.png", 144, 39);
 
 	chooseSign.sprite->setOrigin({91, 38});
-	doubleTimeButton.buttonSprite->sprite->setOrigin({71, 112});
-	hardRockButton.buttonSprite->sprite->setOrigin({ 115, 122 });
-	hiddenButton.buttonSprite->sprite->setOrigin({ 51, 115 });
-	defaultDiff.buttonSprite->sprite->setOrigin({ 144,39 });
 
 	doubleTimeButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
 	hardRockButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
@@ -197,8 +195,7 @@ int main() {
 		InMenu = true;
 		while (InMenu) {
 			
-			Button menuScreen(width / 2, height / 2, "Sprites/title.png");
-			menuScreen.buttonSprite->sprite->setOrigin({ 92, 133 });
+			Button menuScreen(width / 2, height / 2, "Sprites/title.png", 92, 133);
 			menuScreen.buttonSprite->sprite->setPosition({ width / 2, height / 2 });
 
 			while (const std::optional event = window->pollEvent()) {
@@ -598,8 +595,7 @@ int main() {
 		}
 
 		while (Dead == true) {
-			Button gameOver(0, 0, "Sprites/gameover.png");
-			gameOver.buttonSprite->sprite->setOrigin({ 96, 21 });
+			Button gameOver(0, 0, "Sprites/gameover.png", 96, 21);
 			gameOver.buttonSprite->sprite->setPosition({ width / 2, height / 2 });
 
 			bool clicked = gameOver.DetectButtonClick(*window);
