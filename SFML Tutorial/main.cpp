@@ -35,7 +35,6 @@ public:
 	bool Avaliable = true;
 	bool Visible = true;
 
-	// falso é baixo (+) true é cima (-)
 	bool direction = false;
 
 	std::unique_ptr<Object> pipe1;
@@ -547,7 +546,7 @@ int main() {
 
 				pipe.pipe1Ypos = pipe.PipeCenterYPos + 150 + pipe.padding;
 				pipe.pipe2Ypos = pipe.PipeCenterYPos - 150 - pipe.padding;
-					pipe.ChangePipePosition(pipe.PipeXpos);
+				pipe.ChangePipePosition(pipe.PipeXpos);
 			};
 
 			auto UpdatePipe = [&updatePipePosition, &DetectColisionWithPlayer, &DetectPoints, &hidden, &hardRock, &UpdatePipeYPosWhenInHardRockMode, &UpdateVisibilityWhenHiddenMod](Pipe& pipe) {
