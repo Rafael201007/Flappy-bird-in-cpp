@@ -31,8 +31,12 @@ public:
 	int pipe2Ypos;
 	int PipeXpos;
 	int PipeCenterYPos;
+	int padding;
 	bool Avaliable = true;
 	bool Visible = true;
+
+	// falso é baixo (+) true é cima (-)
+	bool direction = false;
 
 	std::unique_ptr<Object> pipe1;
 	std::unique_ptr<Object> pipe2;
@@ -58,8 +62,9 @@ public:
 	}
 
 	void ChangePipeVerticalPositionAndPipePadding(int newYpos, int EspaceBetweenPipes) {
-		pipe1Ypos = newYpos + 150 + EspaceBetweenPipes / 2;
-		pipe2Ypos = newYpos - 150 - EspaceBetweenPipes / 2;
+		padding = EspaceBetweenPipes / 2;
+		pipe1Ypos = newYpos + 150 + padding;
+		pipe2Ypos = newYpos - 150 - padding;
 
 		ChangePipePosition(PipeXpos);
 	}
@@ -124,7 +129,7 @@ int main() {
 	Object background2("Sprites/background.png", bg2Xpos, height);
 
 	float pipeVelocity = 4;
-	float pipeHardRockVerticalVelocity = 2;
+	float pipeHardRockVerticalVelocity = 1;
 
 	Pipe pipes1(1000, birdYpos + 100, 150);
 	Pipe pipes2(1200, birdYpos + 130, 200); 
@@ -524,18 +529,25 @@ int main() {
 
 			// ajeitar os calculos 
 			auto UpdatePipeYPosWhenInHardRockMode = [&pipeHardRockVerticalVelocity](Pipe &pipe) {
-				if (pipe.PipeCenterYPos >= 350) {
-					pipe.PipeCenterYPos += pipeHardRockVerticalVelocity;
-					pipe.pipe1Ypos = pipe.PipeCenterYPos + 150;
-					pipe.pipe2Ypos = pipe.PipeCenterYPos - 150;
-					pipe.ChangePipePosition(pipe.PipeXpos);
+				if (pipe.PipeCenterYPos > 350) {
+					pipe.direction = true;
 				}
-				else if (pipe.PipeCenterYPos <= 100) {
+				else if (pipe.PipeCenterYPos < 100) {
+					pipe.direction = false;
+				}
+
+				if (pipe.direction) {
 					pipe.PipeCenterYPos -= pipeHardRockVerticalVelocity;
-					pipe.pipe1Ypos = pipe.PipeCenterYPos + 150;
-					pipe.pipe2Ypos = pipe.PipeCenterYPos - 150;
-					pipe.ChangePipePosition(pipe.PipeXpos);
 				}
+				else {
+					pipe.PipeCenterYPos += pipeHardRockVerticalVelocity;
+				}
+				
+				std::cout << pipe.direction << std::endl;
+
+				pipe.pipe1Ypos = pipe.PipeCenterYPos + 150 + pipe.padding;
+				pipe.pipe2Ypos = pipe.PipeCenterYPos - 150 - pipe.padding;
+					pipe.ChangePipePosition(pipe.PipeXpos);
 			};
 
 			auto UpdatePipe = [&updatePipePosition, &DetectColisionWithPlayer, &DetectPoints, &hidden, &hardRock, &UpdatePipeYPosWhenInHardRockMode, &UpdateVisibilityWhenHiddenMod](Pipe& pipe) {
