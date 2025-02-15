@@ -542,8 +542,6 @@ int main() {
 					pipe.PipeCenterYPos += pipeHardRockVerticalVelocity;
 				}
 				
-				std::cout << pipe.direction << std::endl;
-
 				pipe.pipe1Ypos = pipe.PipeCenterYPos + 150 + pipe.padding;
 				pipe.pipe2Ypos = pipe.PipeCenterYPos - 150 - pipe.padding;
 				pipe.ChangePipePosition(pipe.PipeXpos);
