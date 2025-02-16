@@ -15,13 +15,17 @@ public:
 	sf::Texture spriteTexture;
 	std::unique_ptr<sf::Sprite> sprite;
 
-	Object(std::string imgfile, float startXpos, float startYpos) {
+	Object(std::string imgfile, float startXpos, float startYpos, int originX = 0, int originY = 0) {
 		if (!spriteTexture.loadFromFile(imgfile)) {
 			std::cerr << "Não foi possível carregar a imagem: " << imgfile << std::endl;
 		}
 
 		sprite = std::make_unique<sf::Sprite>(spriteTexture);
 		sprite->setPosition({ startXpos, startYpos });
+
+		if (originX and originY) {
+			sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
+		}
 	}
 };
 
@@ -147,18 +151,19 @@ int main() {
 
 	int points = 0;
 
-	Object chooseSign("Sprites/Modes/choosemode.png", 0, 0);
+	Object chooseSign("Sprites/Modes/choosemode.png", 0, 0, 91, 38);
 	Button doubleTimeButton(0, 0, "Sprites/Modes/doubletime.png", 71, 112);
 	Button hardRockButton(0, 0, "Sprites/Modes/hardrock.png", 115, 122);
 	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png", 51, 115);
 	Button defaultDiff(0, 0, "Sprites/Modes/default.png", 144, 39);
 
-	chooseSign.sprite->setOrigin({91, 38});
-
 	doubleTimeButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
 	hardRockButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
 	hiddenButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
 	defaultDiff.buttonSprite->sprite->setScale({ 0.70, 0.70 });
+
+	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0);
+	maxpointsSign.sprite->setScale({ 0.50,0.50 });
 
 	sf::SoundBuffer Flapbuffer;
 	if (!Flapbuffer.loadFromFile("SoundEfects/wing.wav")) {
@@ -481,7 +486,7 @@ int main() {
 
 			};
 
-			auto UpdatePoints = [&points, &window]() {
+			auto UpdatePoints = [&points, &window, &maxpointsSign]() {
 				if (points < 10) {
 					Object pointCounter("Sprites/Numbers/0.png", width - 50, height - 50);
 					std::string address = "Sprites/Numbers/";
@@ -523,7 +528,55 @@ int main() {
 					pointCounterDez.sprite->setTexture(texture2);
 
 					window->draw(*pointCounterUn.sprite); 	window->draw(*pointCounterDez.sprite);
+					
+				}
 
+				// render do max points
+
+				if (maxpoints < 10) {
+					Object pointCounter("Sprites/Numbers/0.png", 69, 0);
+					std::string address = "Sprites/Numbers/";
+					std::string type = ".png";
+					std::string point = std::to_string(maxpoints);
+					std::string image = address + point + type;
+					sf::Texture texture;
+					if (!texture.loadFromFile(image)) {
+						return -1;
+					}
+					pointCounter.sprite->setTexture(texture);
+
+					window->draw(*pointCounter.sprite);
+					window->draw(*maxpointsSign.sprite);
+
+				}
+				else if (maxpoints >= 10) {
+					Object pointCounterUn("Sprites/Numbers/0.png", 70, 0);
+					std::string address = "Sprites/Numbers/";
+					std::string type = ".png";
+
+					int unidade = maxpoints % 10;
+					std::string point = std::to_string(unidade);
+					std::string image = address + point + type;
+					sf::Texture texture;
+					if (!texture.loadFromFile(image)) {
+						return -1;
+					}
+
+					Object pointCounterDez("Sprites/Numbers/0.png", 94, 0);
+					int dezena = (maxpoints / 10) % 10;
+					std::string pointDez = std::to_string(dezena);
+					std::string image2 = address + pointDez + type;
+					sf::Texture texture2;
+					if (!texture2.loadFromFile(image2)) {
+						return -1;
+					}
+
+					pointCounterUn.sprite->setTexture(texture);
+					pointCounterDez.sprite->setTexture(texture2);
+
+					window->draw(*pointCounterUn.sprite); 	window->draw(*pointCounterDez.sprite);
+
+					window->draw(*maxpointsSign.sprite);
 				}
 			};
 
@@ -582,6 +635,9 @@ int main() {
 			}
 			if (bg2Xpos <= 0) {
 				bg2Xpos = width;
+			}
+			if (maxpoints < points) {
+				maxpoints = points;
 			}
 
 			bird.sprite->setPosition({ birdXpos,birdYpos });
