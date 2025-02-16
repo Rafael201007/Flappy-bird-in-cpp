@@ -81,10 +81,11 @@ public:
 class Button {
 public:
 	std::unique_ptr<Object> buttonSprite;
-	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress, int originX, int originY) {
+	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress, int originX = 0, int originY = 0) {
 		buttonSprite = std::make_unique<Object>(buttonSpriteAdress, ButtonXpos, ButtonYpos);
-		buttonSprite->sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
-
+		if (originX and originY) {
+			buttonSprite->sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
+		}
 	}
 
 	bool DetectButtonClick(sf::RenderWindow& window) {
