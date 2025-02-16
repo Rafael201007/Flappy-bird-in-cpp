@@ -13,14 +13,14 @@ int maxpoints = 0;
 class Object {
 public:
 	sf::Texture spriteTexture;
-	std::unique_ptr<sf::Sprite> sprite;  // Smart pointer para gerenciar memória
+	std::unique_ptr<sf::Sprite> sprite;
 
 	Object(std::string imgfile, float startXpos, float startYpos) {
 		if (!spriteTexture.loadFromFile(imgfile)) {
 			std::cerr << "Não foi possível carregar a imagem: " << imgfile << std::endl;
 		}
 
-		sprite = std::make_unique<sf::Sprite>(spriteTexture); // Inicializa com a textura
+		sprite = std::make_unique<sf::Sprite>(spriteTexture);
 		sprite->setPosition({ startXpos, startYpos });
 	}
 };
@@ -527,7 +527,6 @@ int main() {
 				}
 			};
 
-			// ajeitar os calculos 
 			auto UpdatePipeYPosWhenInHardRockMode = [&pipeHardRockVerticalVelocity](Pipe &pipe) {
 				if (pipe.PipeCenterYPos > 350) {
 					pipe.direction = true;
@@ -589,10 +588,8 @@ int main() {
 			background1.sprite->setPosition({ bg1Xpos,0 });
 			background2.sprite->setPosition({ bg2Xpos,0 });
 
-			// render
 			window->clear();
 
-			// drawing
 			window->draw(*background1.sprite); window->draw(*background2.sprite);
 
 			window->draw(*bird.sprite);
