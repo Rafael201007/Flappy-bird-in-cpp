@@ -15,7 +15,7 @@ public:
 	sf::Texture spriteTexture;
 	std::unique_ptr<sf::Sprite> sprite;
 
-	Object(std::string imgfile, float startXpos, float startYpos, int originX = 0, int originY = 0) {
+	Object(std::string imgfile, float startXpos, float startYpos, int originX = 0, int originY = 0, float scaleX = 1, float scaleY = 1) {
 		if (!spriteTexture.loadFromFile(imgfile)) {
 			std::cerr << "Não foi possível carregar a imagem: " << imgfile << std::endl;
 		}
@@ -26,6 +26,8 @@ public:
 		if (originX and originY) {
 			sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
 		}
+
+		sprite->setScale({scaleX,scaleY});
 	}
 };
 
@@ -85,11 +87,12 @@ public:
 class Button {
 public:
 	std::unique_ptr<Object> buttonSprite;
-	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress, int originX = 0, int originY = 0) {
+	Button(int ButtonXpos, int ButtonYpos, std::string buttonSpriteAdress, int originX = 0, int originY = 0, float scaleX = 1, float scaleY = 1) {
 		buttonSprite = std::make_unique<Object>(buttonSpriteAdress, ButtonXpos, ButtonYpos);
 		if (originX and originY) {
 			buttonSprite->sprite->setOrigin(sf::Vector2f(static_cast<float>(originX), static_cast<float>(originY)));
 		}
+		buttonSprite->sprite->setScale({scaleX, scaleY});
 	}
 
 	bool DetectButtonClick(sf::RenderWindow& window) {
@@ -152,19 +155,13 @@ int main() {
 	int points = 0;
 
 	Object chooseSign("Sprites/Modes/choosemode.png", 0, 0, 91, 38);
-	Button doubleTimeButton(0, 0, "Sprites/Modes/doubletime.png", 71, 112);
-	Button hardRockButton(0, 0, "Sprites/Modes/hardrock.png", 115, 122);
-	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png", 51, 115);
-	Button defaultDiff(0, 0, "Sprites/Modes/default.png", 144, 39);
+	Button doubleTimeButton(0, 0, "Sprites/Modes/doubletime.png", 71, 112,0.7,0.7);
+	Button hardRockButton(0, 0, "Sprites/Modes/hardrock.png", 115, 122, 0.7, 0.7);
+	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png", 51, 115, 0.7, 0.7);
+	Button defaultDiff(0, 0, "Sprites/Modes/default.png", 144, 39, 0.7, 0.7);
 
-	doubleTimeButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
-	hardRockButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
-	hiddenButton.buttonSprite->sprite->setScale({ 0.70, 0.70 });
-	defaultDiff.buttonSprite->sprite->setScale({ 0.70, 0.70 });
-
-	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0);
-	maxpointsSign.sprite->setScale({ 0.50,0.50 });
-
+	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0,0.5,0.5);
+	
 	sf::SoundBuffer Flapbuffer;
 	if (!Flapbuffer.loadFromFile("SoundEfects/wing.wav")) {
 		return -1;
