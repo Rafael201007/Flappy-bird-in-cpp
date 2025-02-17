@@ -111,6 +111,21 @@ public:
 	}
 };
 
+class Sound {
+public:
+	sf::SoundBuffer Buffer;
+	std::unique_ptr<sf::Sound> sound;
+	Sound(std::string soundfile, int soundVolume = 100) {
+
+		if (!Buffer.loadFromFile(soundfile)){
+			std::cerr << "Não foi possivel carregar som para o arquivo: " << soundfile << std::endl;
+		}
+
+		sound = std::make_unique<sf::Sound>(Buffer);
+		sound->setVolume(soundVolume);
+	}
+};
+
 int main() {
 	start:
 	const int width = 608;
