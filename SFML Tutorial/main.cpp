@@ -177,31 +177,13 @@ int main() {
 
 	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0,0.5,0.5);
 	
-	sf::SoundBuffer Flapbuffer;
-	if (!Flapbuffer.loadFromFile("SoundEfects/wing.wav")) {
-		return -1;
-	}
-	sf::Sound flapSound(Flapbuffer);
-	flapSound.setVolume(50);
-
-	sf::SoundBuffer PointBuffer;
-	if (!PointBuffer.loadFromFile("SoundEfects/point.wav")) {
-		return -1;
-	}
-	sf::Sound pointSound(PointBuffer);
-
-	sf::SoundBuffer dieBuffer;
-	if (!dieBuffer.loadFromFile("SoundEfects/die.wav")) {
-		return -1;
-	}
-	sf::Sound dieSound(dieBuffer);
-
-	sf::SoundBuffer hitBuffer;
-	if (!hitBuffer.loadFromFile("SoundEfects/hit.wav")) {
-		return -1;
-	}
-	sf::Sound hitSound(hitBuffer);
-
+	
+	Sound flapSound("SoundEfects/wing.wav", 50);
+	Sound pointSound("SoundEfects/point.wav");
+	Sound dieSound("SoundEfects / die.wav");
+	Sound hitSound("SoundEfects/hit.wav");
+		
+	
 	sf::Texture dtBackground;
 	if (!dtBackground.loadFromFile("Sprites/dtbackground.png")) {
 		return -1;
@@ -232,7 +214,7 @@ int main() {
 					}
 					else if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
 						InMenu = false;
-						pointSound.play();
+						pointSound.sound->play();
 					}
 				}
 			}
@@ -367,7 +349,7 @@ int main() {
 
 			while (const std::optional event = window->pollEvent()) {
 				auto Flap = [&birdYvel, &flapCounter, &bird, &flapSound]() {
-					flapSound.play();
+					flapSound.sound->play();
 					birdYvel = -7;
 					flapCounter = 10;
 					bird.spriteTexture.loadFromFile("Sprites/birdDown.png");
@@ -435,7 +417,7 @@ int main() {
 
 				if (detect == true) {
 					points += 1;
-					pointSound.play();
+					pointSound.sound->play();
 				}
 			};
 
@@ -484,10 +466,10 @@ int main() {
 			auto DetectColisionWithPlayer = [&bird, &window, &Dead, &DeathAnimation, &hitSound, &dieSound](Pipe& pipes) {
 				if (bird.sprite->getGlobalBounds().findIntersection(pipes.pipe1->sprite->getGlobalBounds()) or
 					bird.sprite->getGlobalBounds().findIntersection(pipes.pipe2->sprite->getGlobalBounds())) {
-					hitSound.play();
+					hitSound.sound->play();
 					DeathAnimation();
 					Dead = true;
-					dieSound.play();
+					dieSound.sound->play();
 				}
 			};
 
