@@ -180,10 +180,14 @@ int main() {
 	
 	Sound flapSound("SoundEfects/wing.wav", 50);
 	Sound pointSound("SoundEfects/point.wav");
-	Sound dieSound("SoundEfects / die.wav");
+	Sound dieSound("SoundEfects/die.wav");
 	Sound hitSound("SoundEfects/hit.wav");
-		
 	
+	Object pointCounterUn("Sprites/Numbers/0.png", width - 50, height - 50);
+	Object pointCounterDez("Sprites/Numbers/0.png", width - 74, height - 50);
+	Object MaxPointCounterUn("Sprites/Numbers/0.png", 69, 0);
+	Object MaxPointCounterDez("Sprites/Numbers/0.png", 94, 0);
+
 	sf::Texture dtBackground;
 	if (!dtBackground.loadFromFile("Sprites/dtbackground.png")) {
 		return -1;
@@ -480,97 +484,80 @@ int main() {
 
 			};
 
-			auto UpdatePoints = [&points, &window, &maxpointsSign]() {
+			auto UpdatePoints = [&points, &window, &maxpointsSign, &pointCounterUn, &pointCounterDez, &MaxPointCounterUn, &MaxPointCounterDez]() {
 				if (points < 10) {
-					Object pointCounter("Sprites/Numbers/0.png", width - 50, height - 50);
-					std::string address = "Sprites/Numbers/";
-					std::string type = ".png";
-					std::string point = std::to_string(points);
-					std::string image = address + point + type;
+					std::string pointString = std::to_string(points);
+					std::string image = "Sprites/Numbers/" + pointString + ".png";
 					sf::Texture texture;
 					if (!texture.loadFromFile(image)) {
 						return -1;
 					}
-					pointCounter.sprite->setTexture(texture);
-
-					window->draw(*pointCounter.sprite);
-
+					pointCounterUn.sprite->setTexture(texture);
+					window->draw(*pointCounterUn.sprite);
 				}
 				else if (points >= 10) {
-					Object pointCounterUn("Sprites/Numbers/0.png", width - 50, height - 50);
-					std::string address = "Sprites/Numbers/";
-					std::string type = ".png";
+					int unPoint = points % 10;
+					int dezPoint = (points / 10) % 10;
 
-					int unidade = points % 10;
-					std::string point = std::to_string(unidade);
-					std::string image = address + point + type;
-					sf::Texture texture;
-					if (!texture.loadFromFile(image)) {
+					std::string unPointStr = std::to_string(unPoint);
+					std::string dezPointStr = std::to_string(dezPoint);
+
+					std::string unImage = "Sprites/Numbers/" + unPointStr + ".png";
+					std::string dezImage = "Sprites/Numbers/" + dezPointStr + ".png";
+
+					sf::Texture unTexture;
+					sf::Texture dezTexture;
+
+					if (!unTexture.loadFromFile(unImage)) {
+						return -1;
+					}
+					if (!dezTexture.loadFromFile(dezImage)) {
 						return -1;
 					}
 
-					Object pointCounterDez("Sprites/Numbers/0.png", width - 74, height - 50);
-					int dezena = (points / 10) % 10;
-					std::string pointDez = std::to_string(dezena);
-					std::string image2 = address + pointDez + type;
-					sf::Texture texture2;
-					if (!texture2.loadFromFile(image2)) {
-						return -1;
-					}
-
-					pointCounterUn.sprite->setTexture(texture);
-					pointCounterDez.sprite->setTexture(texture2);
+					pointCounterUn.sprite->setTexture(unTexture);
+					pointCounterDez.sprite->setTexture(dezTexture);
 
 					window->draw(*pointCounterUn.sprite); 	window->draw(*pointCounterDez.sprite);
-					
 				}
 
 				// render do max points
 
 				if (maxpoints < 10) {
-					Object pointCounter("Sprites/Numbers/0.png", 69, 0);
-					std::string address = "Sprites/Numbers/";
-					std::string type = ".png";
-					std::string point = std::to_string(maxpoints);
-					std::string image = address + point + type;
+					std::string MaxpointString = std::to_string(maxpoints);
+					std::string image = "Sprites/Numbers/" + MaxpointString + ".png";
 					sf::Texture texture;
 					if (!texture.loadFromFile(image)) {
 						return -1;
 					}
-					pointCounter.sprite->setTexture(texture);
-
-					window->draw(*pointCounter.sprite);
-					window->draw(*maxpointsSign.sprite);
+					MaxPointCounterUn.sprite->setTexture(texture);
+					window->draw(*MaxPointCounterUn.sprite);
 
 				}
 				else if (maxpoints >= 10) {
-					Object pointCounterUn("Sprites/Numbers/0.png", 70, 0);
-					std::string address = "Sprites/Numbers/";
-					std::string type = ".png";
+					int unPoint = maxpoints % 10;
+					int dezPoint = (maxpoints / 10) % 10;
 
-					int unidade = maxpoints % 10;
-					std::string point = std::to_string(unidade);
-					std::string image = address + point + type;
-					sf::Texture texture;
-					if (!texture.loadFromFile(image)) {
+					std::string unPointStr = std::to_string(unPoint);
+					std::string dezPointStr = std::to_string(dezPoint);
+
+					std::string unImage = "Sprites/Numbers/" + unPointStr + ".png";
+					std::string dezImage = "Sprites/Numbers/" + dezPointStr + ".png";
+
+					sf::Texture unTexture;
+					sf::Texture dezTexture;
+
+					if (!unTexture.loadFromFile(unImage)) {
+						return -1;
+					}
+					if (!dezTexture.loadFromFile(dezImage)) {
 						return -1;
 					}
 
-					Object pointCounterDez("Sprites/Numbers/0.png", 94, 0);
-					int dezena = (maxpoints / 10) % 10;
-					std::string pointDez = std::to_string(dezena);
-					std::string image2 = address + pointDez + type;
-					sf::Texture texture2;
-					if (!texture2.loadFromFile(image2)) {
-						return -1;
-					}
+					MaxPointCounterUn.sprite->setTexture(unTexture);
+					MaxPointCounterDez.sprite->setTexture(dezTexture);
 
-					pointCounterUn.sprite->setTexture(texture);
-					pointCounterDez.sprite->setTexture(texture2);
-
-					window->draw(*pointCounterUn.sprite); 	window->draw(*pointCounterDez.sprite);
-
-					window->draw(*maxpointsSign.sprite);
+					window->draw(*MaxPointCounterUn.sprite); 	window->draw(*MaxPointCounterDez.sprite);
 				}
 			};
 
