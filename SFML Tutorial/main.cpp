@@ -485,32 +485,24 @@ int main() {
 
 			auto UpdatePoints = [&points, &window, &maxpointsSign, &pointCounterUn, &pointCounterDez, &MaxPointCounterUn, &MaxPointCounterDez]() {
 				if (points < 10) {
-					std::string pointString = std::to_string(points);
-					std::string image = "Sprites/Numbers/" + pointString + ".png";
 					sf::Texture texture;
-					if (!texture.loadFromFile(image)) {
+					if (!texture.loadFromFile("Sprites/Numbers/" + std::to_string(points) + ".png")) {
 						return -1;
 					}
 					pointCounterUn.sprite->setTexture(texture);
 					window->draw(*pointCounterUn.sprite);
 				}
 				else if (points >= 10) {
-					int unPoint = points % 10;
-					int dezPoint = (points / 10) % 10;
-
-					std::string unPointStr = std::to_string(unPoint);
-					std::string dezPointStr = std::to_string(dezPoint);
-
-					std::string unImage = "Sprites/Numbers/" + unPointStr + ".png";
-					std::string dezImage = "Sprites/Numbers/" + dezPointStr + ".png";
-
 					sf::Texture unTexture;
 					sf::Texture dezTexture;
 
-					if (!unTexture.loadFromFile(unImage)) {
+					// unidade
+					if (!unTexture.loadFromFile("Sprites/Numbers/" + std::to_string(points % 10) + ".png")) {
 						return -1;
 					}
-					if (!dezTexture.loadFromFile(dezImage)) {
+
+					// dezena
+					if (!dezTexture.loadFromFile("Sprites/Numbers/" + std::to_string((points / 10) % 10) + ".png")) {
 						return -1;
 					}
 
@@ -523,33 +515,27 @@ int main() {
 				// render do max points
 
 				if (maxpoints < 10) {
-					std::string MaxpointString = std::to_string(maxpoints);
-					std::string image = "Sprites/Numbers/" + MaxpointString + ".png";
 					sf::Texture texture;
-					if (!texture.loadFromFile(image)) {
+
+					if (!texture.loadFromFile("Sprites/Numbers/" + std::to_string(maxpoints) + ".png")) {
 						return -1;
 					}
+
 					MaxPointCounterUn.sprite->setTexture(texture);
 					window->draw(*maxpointsSign.sprite);
 					window->draw(*MaxPointCounterUn.sprite);
 				}
 				else if (maxpoints >= 10) {
-					int unPoint = maxpoints % 10;
-					int dezPoint = (maxpoints / 10) % 10;
-
-					std::string unPointStr = std::to_string(unPoint);
-					std::string dezPointStr = std::to_string(dezPoint);
-
-					std::string unImage = "Sprites/Numbers/" + unPointStr + ".png";
-					std::string dezImage = "Sprites/Numbers/" + dezPointStr + ".png";
-
 					sf::Texture unTexture;
 					sf::Texture dezTexture;
 
-					if (!unTexture.loadFromFile(unImage)) {
+					// unidade
+					if (!unTexture.loadFromFile("Sprites/Numbers/" + std::to_string(maxpoints % 10) + ".png")) {
 						return -1;
 					}
-					if (!dezTexture.loadFromFile(dezImage)) {
+
+					// dezena
+					if (!dezTexture.loadFromFile("Sprites/Numbers/" + std::to_string((maxpoints / 10) % 10) + ".png")) {
 						return -1;
 					}
 
