@@ -175,8 +175,7 @@ int main() {
 	Button hiddenButton(0, 0, "Sprites/Modes/hidden.png", 51, 115, 0.7, 0.7);
 	Button defaultDiff(0, 0, "Sprites/Modes/default.png", 144, 39, 0.7, 0.7);
 
-	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0,0.5,0.5);
-	
+	Object maxpointsSign("Sprites/Modes/maxpoints.png", 0, 0,0,0,0.5,0.5);
 	
 	Sound flapSound("SoundEfects/wing.wav", 50);
 	Sound pointSound("SoundEfects/point.wav");
@@ -531,8 +530,8 @@ int main() {
 						return -1;
 					}
 					MaxPointCounterUn.sprite->setTexture(texture);
+					window->draw(*maxpointsSign.sprite);
 					window->draw(*MaxPointCounterUn.sprite);
-
 				}
 				else if (maxpoints >= 10) {
 					int unPoint = maxpoints % 10;
@@ -557,6 +556,7 @@ int main() {
 					MaxPointCounterUn.sprite->setTexture(unTexture);
 					MaxPointCounterDez.sprite->setTexture(dezTexture);
 
+					window->draw(*maxpointsSign.sprite);
 					window->draw(*MaxPointCounterUn.sprite); 	window->draw(*MaxPointCounterDez.sprite);
 				}
 			};
