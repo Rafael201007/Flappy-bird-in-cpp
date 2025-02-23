@@ -184,8 +184,8 @@ int main() {
 	
 	Object pointCounterUn("Sprites/Numbers/0.png", width - 50, height - 50);
 	Object pointCounterDez("Sprites/Numbers/0.png", width - 74, height - 50);
-	Object MaxPointCounterUn("Sprites/Numbers/0.png", 69, 0);
-	Object MaxPointCounterDez("Sprites/Numbers/0.png", 94, 0);
+	Object MaxPointCounterUn("Sprites/Numbers/0.png", 94, 0);
+	Object MaxPointCounterDez("Sprites/Numbers/0.png", 69, 0);
 
 	sf::Texture dtBackground;
 	if (!dtBackground.loadFromFile("Sprites/dtbackground.png")) {
