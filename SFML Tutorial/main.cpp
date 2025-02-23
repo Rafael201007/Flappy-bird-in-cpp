@@ -466,13 +466,17 @@ int main() {
 				}
 			};
 
-			auto DetectColisionWithPlayer = [&bird, &window, &Dead, &DeathAnimation, &hitSound, &dieSound](Pipe& pipes) {
+			auto Death = [&hitSound, &Dead, &dieSound, &DeathAnimation]() {
+				hitSound.sound->play();
+				DeathAnimation();
+				Dead = true;
+				dieSound.sound->play();
+			};
+
+			auto DetectColisionWithPlayer = [&bird, &window, &Death](Pipe& pipes) {
 				if (bird.sprite->getGlobalBounds().findIntersection(pipes.pipe1->sprite->getGlobalBounds()) or
 					bird.sprite->getGlobalBounds().findIntersection(pipes.pipe2->sprite->getGlobalBounds())) {
-					hitSound.sound->play();
-					DeathAnimation();
-					Dead = true;
-					dieSound.sound->play();
+					Death();
 				}
 			};
 
