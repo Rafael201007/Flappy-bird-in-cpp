@@ -597,6 +597,9 @@ int main() {
 
 			bird.sprite->setRotation(sf::Angle(sf::degrees(birdYvel * 3)));
 
+			if (birdYpos > 490 or birdYpos < -40) {
+				Death();
+			}
 			if (flapCounter <= 0) {
 				bird.spriteTexture.loadFromFile("Sprites/birdUp.png");
 				bird.sprite->setTexture(bird.spriteTexture);
